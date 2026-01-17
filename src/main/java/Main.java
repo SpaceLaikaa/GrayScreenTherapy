@@ -1,3 +1,5 @@
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,12 +23,12 @@ public class Main {
 
     public static void deathLogic(double respawnTimer){
         totalDeadTime++;
-        if (!isYouTubeOpen && respawnTimer>10) {
+        if (!isYouTubeOpen && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
             String genericShortsUrl = "https://www.youtube.com/shorts";
 
             try {
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);// To go directly to yt shorts
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);
                 pb.start();
                 isYouTubeOpen = true;
                 Thread.sleep(1000);
@@ -46,7 +48,7 @@ public class Main {
         while(true){
             try{
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://127.0.0.1:2999/liveclientdata/allgamedata"))//Gets riot api
+                        .uri(URI.create("https://127.0.0.1:2999/liveclientdata/allgamedata"))
                         .GET()
                         .build();
 
@@ -54,7 +56,6 @@ public class Main {
                 String responseBody = response.body();
 
                 JsonObject root = JsonParser.parseString(responseBody).getAsJsonObject();
-
                 if(!root.has("activePlayer") || root.get("activePlayer").isJsonNull()){
                     System.out.println("⚠️Waiting for data (ActivePlayer)...");
                     Thread.sleep(1000);
@@ -62,15 +63,28 @@ public class Main {
                 }
                 JsonObject activePlayer = root.getAsJsonObject("activePlayer");
 
-                if (!activePlayer.has("championStats") || !activePlayer.has("respawnTimer")) {
+                if (!activePlayer.has("championStats")) {
                     System.out.println("⚠️Waiting for data (Stats)...");
                     Thread.sleep(1000);
                     continue;
                 }
-                JsonObject championStats = activePlayer.getAsJsonObject("championStats");
 
+                JsonObject championStats = activePlayer.getAsJsonObject("championStats");
                 double currentHealth = championStats.get("currentHealth").getAsDouble();
-                double respawnTimer = activePlayer.get("respawnTimer").getAsDouble();
+
+                double respawnTimer = 0;
+                if (root.has("allPlayers")) {
+                    JsonArray allPlayers = root.getAsJsonArray("allPlayers");
+                    String myName = activePlayer.get("summonerName").getAsString();
+
+                    for (JsonElement playerElement : allPlayers) {
+                        JsonObject playerObj = playerElement.getAsJsonObject();
+                        if (playerObj.get("summonerName").getAsString().equals(myName)) {
+                            respawnTimer = playerObj.get("respawnTimer").getAsDouble();
+                            break;
+                        }
+                    }
+                }
 
                 if (currentHealth <= 0) {
                     deathLogic(respawnTimer);
@@ -81,7 +95,6 @@ public class Main {
                 Thread.sleep(1000);
             } catch (Exception e){
                 System.out.println("❌ Could not connect to LoL. Is the game running? ❌");
-                e.printStackTrace();
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
