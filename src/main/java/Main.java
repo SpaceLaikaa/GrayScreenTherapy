@@ -2,7 +2,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef.HWND;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +14,19 @@ import java.net.http.HttpResponse;
 public class Main {
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
+    public static void focusLeagueOfLegends() {
+        String windowName = "League of Legends (TM) Client";
+
+        HWND hwnd = User32.INSTANCE.FindWindow(null, windowName);
+
+        if (hwnd != null) {
+            User32.INSTANCE.ShowWindow(hwnd, 9); // 9 = SW_RESTORE
+            User32.INSTANCE.SetForegroundWindow(hwnd);
+            System.out.println("🎯 LoL client!");
+        } else {
+            System.out.println("⚠️ LoL client not found. Make sure the game is running.");
+        }
+    }
 
     private static void closeAllPossibleBrowsers(){
         String[] browsers = {"msedge.exe", "chrome.exe", "opera.exe", "brave.exe", "firefox.exe"};
@@ -34,14 +48,15 @@ public class Main {
                 robot.keyRelease(java.awt.event.KeyEvent.VK_W);
                 robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);
 
+                Thread.sleep(100);
+                focusLeagueOfLegends();
+
                 isYouTubeOpen = false;
 
             } catch (Exception e){
                 System.err.println("Couldn't close the browser: " + e.getMessage());
-
                 closeAllPossibleBrowsers();//Will try popular browsers to close it.
             }
-
         }
         System.out.println("ALIVE (Health: " + currentHealth + ")");
     }
