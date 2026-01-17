@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.awt.*;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,10 +14,34 @@ public class Main {
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
 
+    private static void closeAllPossibleBrowsers(){
+        String[] browsers = {"msedge.exe", "chrome.exe", "opera.exe", "brave.exe", "firefox.exe"};
+        for (String browser : browsers){
+            try{
+                Runtime.getRuntime().exec("taskkill /F /IM " + browser + " /T");
+            } catch (Exception ignored){}
+        }
+    }
+
     public static void aliveLogic(double currentHealth){
         if (isYouTubeOpen) {
             System.out.println("✅ ALIVE -> Welcome back!");
-            isYouTubeOpen = false;
+
+            try{
+                Robot robot = new Robot();
+                robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);
+                robot.keyPress(java.awt.event.KeyEvent.VK_W);
+                robot.keyRelease(java.awt.event.KeyEvent.VK_W);
+                robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);
+
+                isYouTubeOpen = false;
+
+            } catch (Exception e){
+                System.err.println("Couldn't close the browser: " + e.getMessage());
+
+                closeAllPossibleBrowsers();//Will try popular browsers to close it.
+            }
+
         }
         System.out.println("ALIVE (Health: " + currentHealth + ")");
     }
