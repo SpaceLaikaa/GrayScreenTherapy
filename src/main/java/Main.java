@@ -37,29 +37,16 @@ public class Main {
                         String genericShortsUrl = "https://www.youtube.com/shorts";
 
                         try {
-                            Desktop.getDesktop().browse(new URI(genericShortsUrl));
+                            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);// To go directly to yt shorts
+                            pb.start();
                             isYouTubeOpen = true;
+                            Thread.sleep(1000);
 
-                            javax.swing.JFrame focusStealer = new javax.swing.JFrame();
-                            focusStealer.setUndecorated(true); // Make it borderless
-                            focusStealer.setAlwaysOnTop(true); // to make it on the top
-                            focusStealer.setOpacity(0.01f);
-                            focusStealer.setSize(1, 1);
-                            focusStealer.setVisible(true);
-                            Thread.sleep(300);
-                            focusStealer.dispose();
-
-                            java.awt.Robot robot = new java.awt.Robot();
-                            robot.keyPress(java.awt.event.KeyEvent.VK_ALT);
-                            robot.keyPress(java.awt.event.KeyEvent.VK_ESCAPE);
-                            robot.keyRelease(java.awt.event.KeyEvent.VK_ESCAPE);
-                            robot.keyRelease(java.awt.event.KeyEvent.VK_ALT);
                         } catch (Exception e) {
                             System.err.println("Error opening browser: " + e.getMessage());
                         }
                     }
                 } else {
-                    // 2. Canlandığında flag'i sıfırla ki bir sonraki ölümde tekrar açılsın
                     if (isYouTubeOpen) {
                         System.out.println("✅ ALIVE -> Welcome back!");
                         isYouTubeOpen = false;
