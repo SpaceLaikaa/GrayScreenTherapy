@@ -5,13 +5,14 @@ import com.google.gson.JsonParser;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import java.awt.*;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Main {
+    static TherapyGUI gui;
+
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
     public static void focusLeagueOfLegends() {
@@ -80,7 +81,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("---GrayScreenTherapy Starting");
+        gui = new TherapyGUI();
+        gui.update(totalDeadTime, "Alive in The Rift");
+
+        System.out.println("---GrayScreenTherapy Starting---");
         System.out.println("Trying to find The LoL Client...");
 
         HttpClient client = RiotGetAPI.createUnsafeClient();
@@ -126,11 +130,8 @@ public class Main {
                     }
                 }
 
-                if (currentHealth <= 0) {
-                    deathLogic(respawnTimer);
-                } else {
-                    aliveLogic(currentHealth);
-                }
+                if (currentHealth <= 0) {deathLogic(respawnTimer);}
+                else {aliveLogic(currentHealth);}
 
                 Thread.sleep(1000);
             } catch (Exception e){
