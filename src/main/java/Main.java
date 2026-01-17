@@ -1,10 +1,11 @@
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.awt.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.awt.Desktop;
 
 public class Main {
 
@@ -38,6 +39,21 @@ public class Main {
                         try {
                             Desktop.getDesktop().browse(new URI(genericShortsUrl));
                             isYouTubeOpen = true;
+
+                            javax.swing.JFrame focusStealer = new javax.swing.JFrame();
+                            focusStealer.setUndecorated(true); // Make it borderless
+                            focusStealer.setAlwaysOnTop(true); // to make it on the top
+                            focusStealer.setOpacity(0.01f);
+                            focusStealer.setSize(1, 1);
+                            focusStealer.setVisible(true);
+                            Thread.sleep(300);
+                            focusStealer.dispose();
+
+                            java.awt.Robot robot = new java.awt.Robot();
+                            robot.keyPress(java.awt.event.KeyEvent.VK_ALT);
+                            robot.keyPress(java.awt.event.KeyEvent.VK_ESCAPE);
+                            robot.keyRelease(java.awt.event.KeyEvent.VK_ESCAPE);
+                            robot.keyRelease(java.awt.event.KeyEvent.VK_ALT);
                         } catch (Exception e) {
                             System.err.println("Error opening browser: " + e.getMessage());
                         }
