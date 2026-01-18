@@ -22,7 +22,7 @@ Gray Screen Therapy is a lightweight Java-based automation tool designed for Lea
 4.  **Die:** Go ahead, face-check that bush. Your therapy will start automatically.
 
 
-## 🛠️ Technical Details
+## Technical Details
 
 * **Language:** Java
 * **Libraries:** JNA (for Windows API control), GSON (for JSON parsing), Riot Live Client Data API.
