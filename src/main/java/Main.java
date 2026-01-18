@@ -9,12 +9,30 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
+import com.sun.jna.Native;
+//------------------------------------------------
 public class Main {
     static TherapyGUI gui;
 
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
+
+    public static void focusTherapyTab() {//After respawning focus on youtube shorts to close it
+        User32.INSTANCE.EnumWindows((hwnd, pointer) -> {
+            char[] windowText = new char[512];
+            User32.INSTANCE.GetWindowText(hwnd, windowText, 512);
+            String title = Native.toString(windowText);
+
+            if (title.contains("- YouTube")) {
+                User32.INSTANCE.ShowWindow(hwnd, 9);
+                User32.INSTANCE.SetForegroundWindow(hwnd);
+                System.out.println("🎯 Therapy tab found and focused!");
+                return false;
+            }
+            return true;
+        }, null);
+    }
+
     public static void focusLeagueOfLegends() {
         String windowName = "League of Legends (TM) Client";
 
@@ -43,6 +61,10 @@ public class Main {
             System.out.println("✅ ALIVE -> Welcome back!");
 
             try{
+                focusTherapyTab();
+                Thread.sleep(250);
+
+
                 Robot robot = new Robot();
                 robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);
                 robot.keyPress(java.awt.event.KeyEvent.VK_W);
@@ -59,12 +81,14 @@ public class Main {
                 closeAllPossibleBrowsers();//Will try popular browsers to close it.
             }
         }
+        gui.update(totalDeadTime, "Alive...", false);
         System.out.println("ALIVE (Health: " + currentHealth + ")");
     }
 
-    public static void deathLogic(double respawnTimer){
+    public static void deathLogic(double respawnTimer) {
         totalDeadTime++;
-        if (!isYouTubeOpen && respawnTimer > 10) {
+
+        if (gui.isTherapyEnabled() && !isYouTubeOpen && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
             String genericShortsUrl = "https://www.youtube.com/shorts";
 
@@ -72,6 +96,7 @@ public class Main {
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);
                 pb.start();
                 isYouTubeOpen = true;
+
                 Thread.sleep(1000);
 
             } catch (Exception e) {
@@ -82,7 +107,6 @@ public class Main {
 
     public static void main(String[] args) {
         gui = new TherapyGUI();
-        gui.update(totalDeadTime, "Alive in The Rift");
 
         System.out.println("---GrayScreenTherapy Starting---");
         System.out.println("Trying to find The LoL Client...");
@@ -130,8 +154,11 @@ public class Main {
                     }
                 }
 
-                if (currentHealth <= 0) {deathLogic(respawnTimer);}
-                else {aliveLogic(currentHealth);}
+                if (currentHealth <= 0) {
+                    deathLogic(respawnTimer);
+                    gui.update(totalDeadTime, "Therapy Session has started...", true);
+                }
+                else {aliveLogic(currentHealth); gui.update(totalDeadTime, "Alive...", false);}
 
                 Thread.sleep(1000);
             } catch (Exception e){
