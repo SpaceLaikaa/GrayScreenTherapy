@@ -1,8 +1,10 @@
+### Maven ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
+/dependency-reduced-pom.xml
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -13,6 +15,7 @@ target/
 *.iws
 *.iml
 *.ipr
+
 
 ### Eclipse ###
 .apt_generated
