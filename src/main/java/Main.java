@@ -22,7 +22,7 @@ public class Main {
             User32.INSTANCE.GetWindowText(hwnd, windowText, 512);
             String title = Native.toString(windowText);
 
-            if (title.contains("- YouTube")|| title.contains("Instagram") || title.contains("TikTok")) {
+            if (title.contains("- YouTube")|| title.contains("Instagram") || title.contains("TikTok")) { //Probably will change this condition
                 User32.INSTANCE.ShowWindow(hwnd, 3);//fullscreen
                 User32.INSTANCE.SetForegroundWindow(hwnd);
                 System.out.println("🎯 Therapy tab found and focused!");// console feedbacks
@@ -86,16 +86,18 @@ public class Main {
 
     public static void deathLogic(double respawnTimer) {
         totalDeadTime++;
+
         if (gui.isTherapyEnabled() && !isYouTubeOpen && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
             String genericShortsUrl = gui.getSelectedPlatformUrl();
 
             try {
+                gui.moveToCorner();
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);
                 pb.start();
                 isYouTubeOpen = true;
 
-                Thread.sleep(1000);
+                Thread.sleep(1500);
                 focusTherapyTab();
             } catch (Exception e) {
                 System.err.println("Error opening browser: " + e.getMessage());

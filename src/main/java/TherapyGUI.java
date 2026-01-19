@@ -11,6 +11,9 @@ public class TherapyGUI {
     private String selectedPlatformUrl = "https://www.youtube.com/shorts";
     private java.util.List<JButton> platformButtons = new java.util.ArrayList<>();
 
+    public void moveToCorner() {
+        frame.setLocation(0, 0); // Sol üst köşe
+    }
 
     public TherapyGUI() {
         frame = new JFrame("Gray Screen Therapy");
@@ -77,7 +80,6 @@ public class TherapyGUI {
         platformPanel.add(ytBtn);
         platformPanel.add(igBtn);
         platformPanel.add(ttBtn);
-
 
         frame.add(titleLabel);
         frame.add(timeLabel);
