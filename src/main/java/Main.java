@@ -24,7 +24,7 @@ public class Main {
             String title = Native.toString(windowText);
 
             if (title.contains("- YouTube")) {
-                User32.INSTANCE.ShowWindow(hwnd, 9);
+                User32.INSTANCE.ShowWindow(hwnd, 3);
                 User32.INSTANCE.SetForegroundWindow(hwnd);
                 System.out.println("🎯 Therapy tab found and focused!");
                 return false;
@@ -98,7 +98,7 @@ public class Main {
                 isYouTubeOpen = true;
 
                 Thread.sleep(1000);
-
+                focusTherapyTab();
             } catch (Exception e) {
                 System.err.println("Error opening browser: " + e.getMessage());
             }
@@ -156,7 +156,9 @@ public class Main {
 
                 if (currentHealth <= 0) {
                     deathLogic(respawnTimer);
-                    gui.update(totalDeadTime, "Therapy Session has started...", true);
+                    boolean shouldForceFront = (respawnTimer>10);
+
+                    gui.update(totalDeadTime, "Therapy Session has started...", shouldForceFront);
                 }
                 else {aliveLogic(currentHealth); gui.update(totalDeadTime, "Alive...", false);}
 
