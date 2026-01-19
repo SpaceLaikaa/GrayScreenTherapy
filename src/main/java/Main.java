@@ -13,7 +13,6 @@ import com.sun.jna.Native;
 //------------------------------------------------
 public class Main {
     static TherapyGUI gui;
-
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
 
@@ -23,17 +22,17 @@ public class Main {
             User32.INSTANCE.GetWindowText(hwnd, windowText, 512);
             String title = Native.toString(windowText);
 
-            if (title.contains("- YouTube")) {
-                User32.INSTANCE.ShowWindow(hwnd, 3);
+            if (title.contains("- YouTube")|| title.contains("Instagram") || title.contains("TikTok")) {
+                User32.INSTANCE.ShowWindow(hwnd, 3);//fullscreen
                 User32.INSTANCE.SetForegroundWindow(hwnd);
-                System.out.println("🎯 Therapy tab found and focused!");
+                System.out.println("🎯 Therapy tab found and focused!");// console feedbacks
                 return false;
             }
             return true;
         }, null);
     }
 
-    public static void focusLeagueOfLegends() {
+    public static void focusLeagueOfLegends() {//Literally focuses LoL
         String windowName = "League of Legends (TM) Client";
 
         HWND hwnd = User32.INSTANCE.FindWindow(null, windowName);
@@ -41,17 +40,17 @@ public class Main {
         if (hwnd != null) {
             User32.INSTANCE.ShowWindow(hwnd, 9); // 9 = SW_RESTORE
             User32.INSTANCE.SetForegroundWindow(hwnd);
-            System.out.println("🎯 LoL client!");
+            System.out.println("🎯 LoL client!");// console feedbacks
         } else {
-            System.out.println("⚠️ LoL client not found. Make sure the game is running.");
+            System.out.println("⚠️ LoL client not found. Make sure the game is running.");// console feedbacks
         }
     }
 
-    private static void closeAllPossibleBrowsers(){
+    private static void closeAllPossibleBrowsers(){//This method tries to find the users browser to access
         String[] browsers = {"msedge.exe", "chrome.exe", "opera.exe", "brave.exe", "firefox.exe"};
         for (String browser : browsers){
             try{
-                Runtime.getRuntime().exec("taskkill /F /IM " + browser + " /T");
+                Runtime.getRuntime().exec("taskkill /F /IM " + browser + " /T");//close browser
             } catch (Exception ignored){}
         }
     }
@@ -87,10 +86,9 @@ public class Main {
 
     public static void deathLogic(double respawnTimer) {
         totalDeadTime++;
-
         if (gui.isTherapyEnabled() && !isYouTubeOpen && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
-            String genericShortsUrl = "https://www.youtube.com/shorts";
+            String genericShortsUrl = gui.getSelectedPlatformUrl();
 
             try {
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", genericShortsUrl);
@@ -108,8 +106,8 @@ public class Main {
     public static void main(String[] args) {
         gui = new TherapyGUI();
 
-        System.out.println("---GrayScreenTherapy Starting---");
-        System.out.println("Trying to find The LoL Client...");
+        System.out.println("---GrayScreenTherapy Starting---");//Does not affect GUI only for console
+        System.out.println("Trying to find The LoL Client...");// ``
 
         HttpClient client = RiotGetAPI.createUnsafeClient();
 

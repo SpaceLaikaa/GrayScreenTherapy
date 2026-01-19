@@ -8,10 +8,13 @@ public class TherapyGUI {
     private JLabel statusLabel;
     private JButton toggleButton;
     private boolean therapyEnabled = true;
+    private String selectedPlatformUrl = "https://www.youtube.com/shorts";
+    private java.util.List<JButton> platformButtons = new java.util.ArrayList<>();
+
 
     public TherapyGUI() {
         frame = new JFrame("Gray Screen Therapy");
-        frame.setSize(350, 250);
+        frame.setSize(350, 320);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null);
@@ -29,7 +32,7 @@ public class TherapyGUI {
 
         frame.getContentPane().setBackground(Color.BLACK);
 
-        frame.setLayout(new GridLayout(4, 1));
+        frame.setLayout(new GridLayout(5, 1));
 
         JLabel titleLabel = new JLabel("TOTAL WASTED TIME", SwingConstants.CENTER);
         titleLabel.setForeground(Color.GRAY);
@@ -62,12 +65,55 @@ public class TherapyGUI {
             }
         });
 
+        JPanel platformPanel = new JPanel(new GridLayout(1,3));
+        platformPanel.setBackground(Color.BLACK);
+
+        JButton ytBtn = createPlatformButton("YouTube", Color.RED, "https://www.youtube.com/shorts");
+        JButton igBtn = createPlatformButton("Instagram", new Color(225, 48, 108), "https://www.instagram.com/reels/");
+        JButton ttBtn = createPlatformButton("TikTok", Color.CYAN, "https://www.tiktok.com/");
+
+        ytBtn.setForeground(Color.RED);
+
+        platformPanel.add(ytBtn);
+        platformPanel.add(igBtn);
+        platformPanel.add(ttBtn);
+
+
         frame.add(titleLabel);
         frame.add(timeLabel);
         frame.add(statusLabel);
         frame.add(toggleButton);
+        frame.add(platformPanel);
 
         frame.setVisible(true);
+    }
+
+    private JButton createPlatformButton(String name, Color color, String url) {
+
+        JButton btn = new JButton(name);
+        btn.setFocusPainted(false);
+        btn.setBackground(new Color(20, 20, 20));
+        btn.setForeground(Color.LIGHT_GRAY);
+        btn.setFont(new Font("Verdana", Font.BOLD, 10));
+        btn.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+
+        platformButtons.add(btn);
+
+        btn.addActionListener(e -> {
+            selectedPlatformUrl = url;
+
+            for (JButton b : platformButtons) {
+                b.setForeground(Color.LIGHT_GRAY);
+            }
+            btn.setForeground(color);
+
+            System.out.println("Switched to: " + name);
+        });
+        return btn;
+    }
+
+    public String getSelectedPlatformUrl() {
+        return selectedPlatformUrl;
     }
 
     public boolean isTherapyEnabled() {
