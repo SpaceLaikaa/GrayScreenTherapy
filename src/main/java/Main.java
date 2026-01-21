@@ -15,6 +15,7 @@ public class Main {
     static TherapyGUI gui;
     static boolean isYouTubeOpen = false;
     static double totalDeadTime = 0;
+    static double totalLifetimeFromStats = 0;
 
     public static void focusTherapyTab() {//After respawning focus on youtube shorts to close it
         User32.INSTANCE.EnumWindows((hwnd, pointer) -> {
@@ -56,6 +57,10 @@ public class Main {
     }
 
     public static void aliveLogic(double currentHealth){
+        Stats stats = new Stats();
+        double totalWastedSeconds =stats.totalWastedTime;
+
+
         if (isYouTubeOpen) {
             System.out.println("✅ ALIVE -> Welcome back!");
 
@@ -73,14 +78,19 @@ public class Main {
                 Thread.sleep(100);
                 focusLeagueOfLegends();
 
+                Stats currentStats = DataManager.loadStats();
+                currentStats.totalWastedTime += totalDeadTime;
+                DataManager.saveStats(currentStats);
+
                 isYouTubeOpen = false;
+                totalDeadTime=0;
 
             } catch (Exception e){
                 System.err.println("Couldn't close the browser: " + e.getMessage());
                 closeAllPossibleBrowsers();//Will try popular browsers to close it.
             }
         }
-        gui.update(totalDeadTime, "Alive...", false);
+        gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
         System.out.println("ALIVE (Health: " + currentHealth + ")");
     }
 
@@ -158,9 +168,9 @@ public class Main {
                     deathLogic(respawnTimer);
                     boolean shouldForceFront = (respawnTimer>10);
 
-                    gui.update(totalDeadTime, "Therapy Session has started...", shouldForceFront);
+                    gui.update(totalDeadTime,totalLifetimeFromStats,"Therapy Session has started...", shouldForceFront);
                 }
-                else {aliveLogic(currentHealth); gui.update(totalDeadTime, "Alive...", false);}
+                else {aliveLogic(currentHealth); gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);}
 
                 Thread.sleep(1000);
             } catch (Exception e){

@@ -7,7 +7,11 @@ public class TherapyGUI {
     private JLabel timeLabel;
     private JLabel statusLabel;
     private JButton toggleButton;
+    private JLabel lifetimeLabel;
+    private JTabbedPane tabbedPane;
+
     private boolean therapyEnabled = true;
+
     private String selectedPlatformUrl = "https://www.youtube.com/shorts";
     private java.util.List<JButton> platformButtons = new java.util.ArrayList<>();
 
@@ -20,6 +24,7 @@ public class TherapyGUI {
         frame.setSize(350, 320);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        tabbedPane = new JTabbedPane();
 
         try {
             URL iconURL = getClass().getResource("/Logo.png");
@@ -31,10 +36,9 @@ public class TherapyGUI {
             System.err.println("No Logo: " + e.getMessage());
             e.printStackTrace();
         }
-
+        JPanel mainPanel = new JPanel(new GridLayout(5, 1));
+        mainPanel.setBackground(Color.BLACK);
         frame.getContentPane().setBackground(Color.BLACK);
-
-        frame.setLayout(new GridLayout(5, 1));
 
         JLabel titleLabel = new JLabel("TOTAL WASTED TIME", SwingConstants.CENTER);
         titleLabel.setForeground(Color.GRAY);
@@ -80,13 +84,17 @@ public class TherapyGUI {
         platformPanel.add(igBtn);
         platformPanel.add(ttBtn);
 
-        frame.add(titleLabel);
-        frame.add(timeLabel);
-        frame.add(statusLabel);
-        frame.add(toggleButton);
-        frame.add(platformPanel);
+        mainPanel.add(titleLabel);
+        mainPanel.add(timeLabel);
+        mainPanel.add(statusLabel);
+        mainPanel.add(toggleButton);
+        mainPanel.add(platformPanel);
 
         frame.setVisible(true);
+        tabbedPane.addTab("Therapy", mainPanel);
+        tabbedPane.addTab("All-Time Stats", createStatsPanel()); // Aşağıda yazacağımız metot
+
+        frame.add(tabbedPane);
     }
 
     private JButton createPlatformButton(String name, Color color, String url) {
@@ -121,11 +129,17 @@ public class TherapyGUI {
         return therapyEnabled;
     }
 
-    public void update(double totalSeconds, String status, boolean isDead) {
+    public void update(double totalSeconds, double lifetimeSeconds, String status, boolean isDead) {
         long mins = (long) totalSeconds / 60;
         long secs = (long) totalSeconds % 60;
 
         timeLabel.setText(String.format("%02d:%02d", mins, secs));
+        statusLabel.setText(status);
+        long hours = (long) lifetimeSeconds / 3600;
+        long lMins = ((long) lifetimeSeconds % 3600) / 60;
+        long lSecs = (long) lifetimeSeconds % 60;
+        lifetimeLabel.setText(String.format("%dh %dm %ds", hours, lMins, lSecs));
+
         statusLabel.setText(status);
 
         if (isDead) {
@@ -138,7 +152,6 @@ public class TherapyGUI {
         }
         else {
             frame.setAlwaysOnTop(false);
-
             if (!status.contains("Waiting") && !status.contains("not found")) {
                 statusLabel.setForeground(Color.GREEN);
             }
@@ -147,5 +160,27 @@ public class TherapyGUI {
         if (status.contains("Waiting") || status.contains("not found")) {
             statusLabel.setForeground(Color.RED);
         }
+    }
+    private JPanel createStatsPanel() {
+        JPanel panel = new JPanel(new GridLayout(3, 1));
+        panel.setBackground(Color.BLACK);
+
+        JLabel statsTitle = new JLabel("LIFETIME WASTED TIME", SwingConstants.CENTER);
+        statsTitle.setForeground(Color.GRAY);
+        statsTitle.setFont(new Font("Verdana", Font.BOLD, 14));
+
+        lifetimeLabel = new JLabel("0h 0m 0s", SwingConstants.CENTER);
+        lifetimeLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
+        lifetimeLabel.setForeground(Color.CYAN);
+
+        JLabel subText = new JLabel("Total therapy history", SwingConstants.CENTER);
+        subText.setForeground(Color.DARK_GRAY);
+        subText.setFont(new Font("Verdana", Font.ITALIC, 12));
+
+        panel.add(statsTitle);
+        panel.add(lifetimeLabel);
+        panel.add(subText);
+
+        return panel;
     }
 }
