@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.sun.jna.Native;
+
 //------------------------------------------------
 public class Main {
     static TherapyGUI gui;
@@ -57,17 +58,11 @@ public class Main {
     }
 
     public static void aliveLogic(double currentHealth){
-        Stats stats = new Stats();
-        double totalWastedSeconds =stats.totalWastedTime;
-
-
         if (isYouTubeOpen) {
             System.out.println("✅ ALIVE -> Welcome back!");
-
-            try{
+            try {
                 focusTherapyTab();
                 Thread.sleep(250);
-
 
                 Robot robot = new Robot();
                 robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);
@@ -77,20 +72,24 @@ public class Main {
 
                 Thread.sleep(100);
                 focusLeagueOfLegends();
-
-                Stats currentStats = DataManager.loadStats();
-                currentStats.totalWastedTime += totalDeadTime;
-                DataManager.saveStats(currentStats);
-
                 isYouTubeOpen = false;
-                totalDeadTime=0;
-
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("Couldn't close the browser: " + e.getMessage());
                 closeAllPossibleBrowsers();//Will try popular browsers to close it.
+                isYouTubeOpen = false;
             }
         }
-        gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
+
+        // 10 saniye alti veya ustu fark etmez, eger birikmis deadTime varsa kaydet
+        if (totalDeadTime > 0) {
+            Stats currentStats = DataManager.loadStats();
+            currentStats.totalWastedTime += totalDeadTime;
+            totalLifetimeFromStats = currentStats.totalWastedTime;
+            DataManager.saveStats(currentStats);
+            totalDeadTime = 0;
+        }
+
+        gui.update(0, totalLifetimeFromStats, "Alive...", false);
         System.out.println("ALIVE (Health: " + currentHealth + ")");
     }
 
@@ -116,6 +115,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        Stats loadedStats = DataManager.loadStats();//Data
+        totalLifetimeFromStats = loadedStats.totalWastedTime;
         gui = new TherapyGUI();
 
         System.out.println("---GrayScreenTherapy Starting---");//Does not affect GUI only for console
@@ -167,10 +168,11 @@ public class Main {
                 if (currentHealth <= 0) {
                     deathLogic(respawnTimer);
                     boolean shouldForceFront = (respawnTimer>10);
-
-                    gui.update(totalDeadTime,totalLifetimeFromStats,"Therapy Session has started...", shouldForceFront);
+                    gui.update(totalDeadTime, totalLifetimeFromStats + totalDeadTime, "Therapy Session has started...", shouldForceFront);
                 }
-                else {aliveLogic(currentHealth); gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);}
+                else {
+                    aliveLogic(currentHealth);
+                }
 
                 Thread.sleep(1000);
             } catch (Exception e){

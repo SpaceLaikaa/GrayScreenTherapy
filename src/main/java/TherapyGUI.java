@@ -33,7 +33,6 @@ public class TherapyGUI {
         frame.setLocationRelativeTo(null);
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.setFocusable(false);
         tabbedPane.setBackground(DARK_ACCENT);
         tabbedPane.setForeground(Color.WHITE);
 
