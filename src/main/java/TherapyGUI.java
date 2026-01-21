@@ -19,7 +19,6 @@ public class TherapyGUI {
         frame = new JFrame("Gray Screen Therapy");
         frame.setSize(350, 320);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null);
 
         try {
