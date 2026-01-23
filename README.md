@@ -48,7 +48,7 @@ Gray Screen Therapy, League of Legends oynarken o 40 küsur saniyelik gri ekrana
 
 ### Kurulum ve Kullanım
 
-1.  **İndir:** [Releases](https://github.com/SpaceLaikaa/GrayScreenTherapy/releases/) sayfasından `GrayScreenTherapy-1.0.exe` dosyasını indirin.
+1.  **İndir:** [Releases](https://github.com/SpaceLaikaa/GrayScreenTherapy/releases/) sayfasından hangi güncel sürümdeyse uygulama o sürümün .exe dosyasını indirin.
 2.  **Kur:** Yükleyiciyi çalıştırın ve talimatları izleyin. Masaüstünüze otomatik bir kısayol oluşturulacaktır.
 3.  **Çalıştır:** Uygulamayı açın, ardından bir League of Legends maçı başlatın.
 4.  **Öl:** Öldüğünüzde terapiniz otomatik olarak başlayacaktır.
