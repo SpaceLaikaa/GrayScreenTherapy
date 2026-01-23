@@ -191,12 +191,10 @@ public class TherapyGUI {
 
         if (isDead) {
             if (therapyEnabled) {
-                frame.setAlwaysOnTop(true);
                 frame.toFront();
             }
             statusLabel.setForeground(Color.RED);
         } else {
-            frame.setAlwaysOnTop(false);
             if (!status.contains("Waiting") && !status.contains("not found")) {
                 statusLabel.setForeground(Color.GREEN);
             }

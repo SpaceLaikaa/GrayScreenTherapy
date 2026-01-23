@@ -165,13 +165,14 @@ public class Main {
                     }
                 }
 
-                if (currentHealth <= 0) {
+                if (currentHealth <= 0||respawnTimer > 0) {
                     deathLogic(respawnTimer);
                     boolean shouldForceFront = (respawnTimer>10);
-                    gui.update(totalDeadTime, totalLifetimeFromStats + totalDeadTime, "Therapy Session has started...", shouldForceFront);
+                    gui.update(totalDeadTime, totalLifetimeFromStats + totalDeadTime, "Therapy Session has started... For " + (int)respawnTimer+"s", shouldForceFront);
                 }
                 else {
                     aliveLogic(currentHealth);
+                    gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
                 }
 
                 Thread.sleep(1000);
