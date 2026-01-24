@@ -59,7 +59,7 @@ public class TherapyGUI {
         timeLabel.setFont(new Font("Consolas", Font.BOLD, 56));
         timeLabel.setForeground(Color.WHITE);
 
-        statusLabel = new JLabel("Searching for the Summoners Rift", SwingConstants.CENTER);
+        statusLabel = new JLabel("<html><center>Searching for Summoner's Rift<br><font size='3' color='#C89B3C'>(Borderless Mode Required)</font></center></html>", SwingConstants.CENTER);
         statusLabel.setForeground(Color.GREEN);
         statusLabel.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
 

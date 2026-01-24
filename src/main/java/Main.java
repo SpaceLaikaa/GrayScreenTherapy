@@ -95,7 +95,6 @@ public class Main {
             }
         }
 
-        // 10 saniye alti veya ustu fark etmez, eger birikmis deadTime varsa kaydet
         if (totalDeadTime > 0) {
             Stats currentStats = DataManager.loadStats();
             currentStats.totalWastedTime += totalDeadTime;
@@ -187,13 +186,13 @@ public class Main {
                 }
                 else {
                     aliveLogic(currentHealth);
-                    gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
+                    gui.update(0, totalLifetimeFromStats, "<html><center>Alive...<br><font size='2'>(Borderless Required)</font></center></html>", false);
                 }
 
                 Thread.sleep(1000);
             } catch (Exception e){
                 System.out.println("❌ Could not connect to LoL. Is the game running? ❌");//console
-                gui.update(0, totalLifetimeFromStats,"Open League of Legends",false);
+                gui.update(0, totalLifetimeFromStats, "<html><center>Open LoL<br><font size='2'>(Borderless Mode Required)</font></center></html>", false);
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
