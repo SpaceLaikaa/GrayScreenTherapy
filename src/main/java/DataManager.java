@@ -25,7 +25,7 @@ public static Stats loadStats() {
             String json = gson.toJson(stats);
             Files.writeString(Paths.get(FILE_NAME), json);
         } catch (Exception e) {
-            System.err.println("Veri kaydetme hatası: " + e.getMessage());
+            System.err.println("Data Error: " + e.getMessage());
         }
     }
 }

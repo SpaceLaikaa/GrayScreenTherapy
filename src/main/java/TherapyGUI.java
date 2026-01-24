@@ -32,6 +32,10 @@ public class TherapyGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
+        UIManager.put("TabbedPane.selected", HEXTECH_BG);
+        UIManager.put("TabbedPane.contentAreaColor", DARK_ACCENT);
+        UIManager.put("TabbedPane.focus", HEXTECH_GOLD);
+
         tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(DARK_ACCENT);
         tabbedPane.setForeground(Color.WHITE);

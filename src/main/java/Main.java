@@ -178,6 +178,7 @@ public class Main {
                 Thread.sleep(1000);
             } catch (Exception e){
                 System.out.println("❌ Could not connect to LoL. Is the game running? ❌");
+                gui.update(0, totalLifetimeFromStats,"Open League of Legends",false);
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
