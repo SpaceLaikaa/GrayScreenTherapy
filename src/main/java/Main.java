@@ -187,7 +187,6 @@ public class Main {
                 }
                 else {
                     aliveLogic(currentHealth);
-                    gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
                 }
 
                 Thread.sleep(1000);
