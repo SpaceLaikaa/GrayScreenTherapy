@@ -111,7 +111,7 @@ public class Main {
     public static void deathLogic(double respawnTimer) {
         totalDeadTime++;
 
-        if (gui.isTherapyEnabled() && !isBrowserActuallyOpen() && respawnTimer > 10) {
+        if (gui.isTherapyEnabled() && (!isYouTubeOpen || !isBrowserActuallyOpen()) && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
             String genericShortsUrl = gui.getSelectedPlatformUrl();
 
@@ -187,11 +187,12 @@ public class Main {
                 }
                 else {
                     aliveLogic(currentHealth);
+                    gui.update(totalDeadTime, totalLifetimeFromStats,"Alive...", false);
                 }
 
                 Thread.sleep(1000);
             } catch (Exception e){
-                System.out.println("❌ Could not connect to LoL. Is the game running? ❌");
+                System.out.println("❌ Could not connect to LoL. Is the game running? ❌");//console
                 gui.update(0, totalLifetimeFromStats,"Open League of Legends",false);
                 try {
                     Thread.sleep(2000);
