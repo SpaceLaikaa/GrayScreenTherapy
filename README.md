@@ -12,6 +12,7 @@ Gray Screen Therapy is a lightweight Java-based automation tool designed for Lea
 * **Wasted Time Tracker:** Tracks every second you spend in the gray screen. Use this data to reflect on your life choices.
 * **Therapy Toggle:** An interactive UI button to pause/resume the automation whenever you need to focus back.
 * **Standalone Installer:** No Java? No problem. Bundled with a mini JRE, so it works out of the box.
+* **⚠️NOTE⚠️**: Automation only triggers if your respawn timer is longer than 10 seconds. Why? Because 10 seconds pass in a blink. By the time the browser launches and the video starts loading, you'd already be respawning.
 
 
 ## Installation & Usage
@@ -44,7 +45,7 @@ Gray Screen Therapy, League of Legends oynarken o 40 küsur saniyelik gri ekrana
 * **Boşa Geçen Zaman Sayacı:** Gri ekranda geçirdiğiniz her saniyeyi takip eder. Böylece boşa beklediğiniz zamanı görebilirsiniz.
 * **Terapi Butonu:** Oyuna odaklanmanız gerektiğinde otomasyonu tek tıkla duraklatıp devam ettirebilirsiniz.
 * **Bağımsız Kurulum:** Bilgisayarınızda Java yüklü olmasa bile çalışır.
-
+* **⚠️NOT⚠️**: Uygulama yalnızca yeniden canlanma süreniz 10 saniyeden uzun olduğunda çalışır. Neden? Çünkü 10 saniyede tarayıcı açılıp video yüklenene kadar zaten çoktan canlanmış olursunuz.
 
 ### Kurulum ve Kullanım
 
