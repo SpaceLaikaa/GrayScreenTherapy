@@ -18,6 +18,21 @@ public class Main {
     static double totalDeadTime = 0;
     static double totalLifetimeFromStats = 0;
 
+    public static boolean isBrowserActuallyOpen() {
+        final boolean[] found = {false};
+        User32.INSTANCE.EnumWindows((hwnd, pointer) -> {
+            char[] windowText = new char[512];
+            User32.INSTANCE.GetWindowText(hwnd, windowText, 512);
+            String title = Native.toString(windowText);
+            if (title.contains("- YouTube") || title.contains("Instagram") || title.contains("TikTok")) {
+                found[0] = true;
+                return false;
+            }
+            return true;
+        }, null);
+        return found[0];
+    }
+
     public static void focusTherapyTab() {//After respawning focus on youtube shorts to close it
         User32.INSTANCE.EnumWindows((hwnd, pointer) -> {
             char[] windowText = new char[512];
@@ -96,7 +111,7 @@ public class Main {
     public static void deathLogic(double respawnTimer) {
         totalDeadTime++;
 
-        if (gui.isTherapyEnabled() && !isYouTubeOpen && respawnTimer > 10) {
+        if (gui.isTherapyEnabled() && !isBrowserActuallyOpen() && respawnTimer > 10) {
             System.out.println("Starting Therapy Session...");
             String genericShortsUrl = gui.getSelectedPlatformUrl();
 
